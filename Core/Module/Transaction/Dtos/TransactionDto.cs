@@ -1,8 +1,8 @@
 ﻿using Shared.Enum;
 
-namespace DB.Entities
+namespace Core.Module.Transaction.Dtos
 {
-    public class Transactions
+    public class TransactionDto
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
@@ -10,8 +10,5 @@ namespace DB.Entities
         public decimal Value { get; set; }
         public decimal Sald { get; set; }
         public string? AccountNumberAccount { get; set; }
-
-        //foreigns
-        public virtual Account? Account { get; set; }
     }
 }

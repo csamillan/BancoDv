@@ -4,6 +4,7 @@ using DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DB.Migrations
 {
     [DbContext(typeof(BancoDbContext))]
-    partial class BancoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250805003243_updateEntities")]
+    partial class updateEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +35,11 @@ namespace DB.Migrations
                         .HasPrecision(12, 2)
                         .HasColumnType("tinyint");
 
-                    b.Property<string>("IdentityDocument")
+                    b.Property<string>("ClientIdentityDocument")
                         .HasColumnType("nvarchar(12)");
+
+                    b.Property<string>("IdentityDocument")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("InitialBalance")
                         .HasPrecision(12, 2)
@@ -44,7 +50,7 @@ namespace DB.Migrations
 
                     b.HasKey("NumberAccount");
 
-                    b.HasIndex("IdentityDocument");
+                    b.HasIndex("ClientIdentityDocument");
 
                     b.ToTable("Accounts");
                 });
@@ -107,9 +113,10 @@ namespace DB.Migrations
                         .HasPrecision(12, 2)
                         .HasColumnType("decimal(12,2)");
 
-                    b.Property<byte>("TypeMovement")
+                    b.Property<string>("TypeMovement")
+                        .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("tinyint");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Value")
                         .HasPrecision(12, 2)
@@ -126,7 +133,7 @@ namespace DB.Migrations
                 {
                     b.HasOne("DB.Entities.Client", "Client")
                         .WithMany("Accounts")
-                        .HasForeignKey("IdentityDocument");
+                        .HasForeignKey("ClientIdentityDocument");
 
                     b.Navigation("Client");
                 });

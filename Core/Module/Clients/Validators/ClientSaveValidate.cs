@@ -27,7 +27,7 @@ namespace Core.Module.Clients.Validators
                             .MaximumLength(15)
                             .WithMessage("Solo puede ingresar maximo 15 digitos");
 
-            RuleFor(x => x.Identity)
+            RuleFor(x => x.IdentityDocument)
                             .NotEmpty()
                             .WithMessage("Debe Ingresar su documento de identidad")
                             .MaximumLength(15)
@@ -46,6 +46,12 @@ namespace Core.Module.Clients.Validators
                             .WithMessage("Debe ingresar un genero")
                             .IsInEnum()
                             .WithMessage("El genero no es valido");
+
+            RuleFor(x => x.Password)
+                            .NotEmpty()
+                            .WithMessage("Debe ingresar una contraseña")
+                            .MaximumLength(25)
+                            .WithMessage("Solo puede ingresar maximo 25 caracteres");
         }
     }
 }

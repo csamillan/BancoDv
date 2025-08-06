@@ -1,11 +1,17 @@
 using API;
+using API.Filters;
 using DB;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
+builder.Configuration.AddEnvironmentVariables();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<GlobalExceptionFilter>();
+});
+builder.Services.ConfigureServices();
+builder.Services.AddServices();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -18,9 +24,6 @@ builder.Services.AddDbContext<BancoDbContext>(options =>
     options.UseSqlServer(connectionStr);
 });
 
-// Configure app dependencies
-builder.Services.AddServices();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,6 +34,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngularClient");
 
 app.UseAuthorization();
 

@@ -2,7 +2,9 @@
 using Core.Module.Clients.Interfaces;
 using DB;
 using DB.Entities;
+using Shared.Exceptions;
 using Shared.Validate.Interfaces;
+using Shared.Vistas;
 
 namespace Core.Module.Clients.Service
 {
@@ -23,9 +25,27 @@ namespace Core.Module.Clients.Service
             return _dtoService.Map<IList<ClientDto>>(list);
         }
 
+        public ClientDto GetClientByIdentification(string identity)
+        {
+            var currentClient = _context.Clients.Find(identity);
+
+            if (currentClient == null)
+            {
+                throw new ApiException("Cliente no encontrado");
+            }
+
+            return _dtoService.Map<ClientDto>(currentClient);
+        }
+
         public void SaveClient(ClientSaveDto dto)
         {
             _dtoService.Validate(dto);
+
+            var currentClient = _context.Clients.Find(dto.IdentityDocument);
+            if (currentClient != null)
+            {
+                throw new ApiException("El cliente ya se encuentra registrado");
+            }
 
             var client = _dtoService.Map<Client>(dto);
 
@@ -37,10 +57,10 @@ namespace Core.Module.Clients.Service
         {
             _dtoService.Validate(dto);
 
-            var currentClient = _context.Clients.Find(dto.Identity);
+            var currentClient = _context.Clients.Find(dto.IdentityDocument);
             if (currentClient == null)
             {
-                return;
+                throw new ApiException("El cliente no se encuentra registrado");
             }
 
             _dtoService.Map(dto, currentClient);
@@ -52,11 +72,10 @@ namespace Core.Module.Clients.Service
             var client = _context.Clients.Find(identity);
             if (client == null)
             {
-                return;
+                throw new ApiException("El cliente no se encuentra registrado");
             }
             _context.Clients.Remove(client);
             _context.SaveChanges();
-
         }
 
     }

@@ -4,7 +4,7 @@ namespace Shared.Enum
 {
     public enum TypeAccount : Byte
     {
-        [Description("Ahorros")] Saving = 1,
-        [Description("Corriente")] Running = 2,
+        [Description("Ahorros")] Ahorros = 1,
+        [Description("Corriente")] Corriente = 2,
     }
 }
