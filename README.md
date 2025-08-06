@@ -13,7 +13,7 @@ Este proyecto es una API REST desarrollada con **.NET Core 8.0**, diseñado para
 1. Clona el repositorio:
    ```bash
    git clone https://github.com/csamillan/BancoDv.git
-   cd nombre-del-repositorio
+   cd BancoDv
    ```
 
 2. Restaura las dependencias:
